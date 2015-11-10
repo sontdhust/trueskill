@@ -97,7 +97,7 @@ describe Numerics::GaussianDistribution, "absolute difference (-)" do
   
 end
 
-describe Numerics::GaussianDistribution, "#value_at" do
+describe Numerics::GaussianDistribution, "#at" do
   
   it "should have a value of 0.073654 for x = 2" do
     expect(Numerics::GaussianDistribution.new(4,5).at(2)).to be_within(tolerance).of(0.073654)
@@ -147,15 +147,15 @@ describe Numerics::GaussianDistribution, "functions" do
       expect(Numerics::GaussianDistribution.inverse_distribution_function(0.9)).to be_within(0.00001).of(1.281551)
     end
     
-    it "#error_function_inv should return 0.0888559 at 0.9" do
+    it "#inverse_error_function should return 0.0888559 at 0.9" do
       expect(Numerics::GaussianDistribution.inverse_error_function(0.9)).to be_within(0.00001).of(0.0888559)
     end
     
-    it "#error_function_inv should return 0.779983 at 0.27" do
+    it "#inverse_error_function should return 0.779983 at 0.27" do
       expect(Numerics::GaussianDistribution.inverse_error_function(0.27)).to be_within(0.00001).of(0.779983)
     end
     
-    it "#error_function_inv should return 100 at -0.5" do
+    it "#inverse_error_function should return 100 at -0.5" do
       expect(Numerics::GaussianDistribution.inverse_error_function(-0.5)).to be_within(0.00001).of(100)
     end
     

@@ -11,7 +11,7 @@ module Numerics
     # variance: σ ** 2
     # precision: π (pi) = 1.0 / variance = 1.0 / (σ ** 2)
     # precision_mean: τ (tau) = precision * mean = μ / (σ ** 2)
-    attr_accessor :mean, :standard_deviation, :variance, :precision, :precision_mean
+    attr_reader :mean, :standard_deviation, :variance, :precision, :precision_mean
 
     def initialize(mean = 0.0, standard_deviation = 1.0)
       mean = 0.0 unless mean.to_f.finite?
@@ -115,7 +115,7 @@ module Numerics
     def +(other)
     
     end
-  
+
     def ==(other)
       self.mean == other.mean && self.variance == other.variance
     end
