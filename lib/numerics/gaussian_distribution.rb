@@ -23,17 +23,9 @@ module Numerics
       @precision_mean = @precision * mean
     end
 
-    def clone(other)
-      @mean = other.mean
-      @standard_deviation = other.standard_deviation
-      @variance = other.variance
-      @precision = other.precision
-      @precision_mean = other.precision_mean
-    end
-
     class << self
 
-      def from_precision_mean(precision_mean, precision)
+      def from_precision_mean(precision_mean = 0.0, precision = 0.0)
         GaussianDistribution.new(precision_mean / precision, Math.sqrt(1 / precision))
       end
 

@@ -6,7 +6,7 @@ module FactorGraphs
     end
 
     def visit(depth = -1, max_depth = 0)
-      raise "Abstract method FactorGraphs::Schedule#visit(depth, max_depth)"
+      raise NotImplementedError, "Abstract method FactorGraphs::Schedule#visit(depth, max_depth)"
     end
 
     def to_s

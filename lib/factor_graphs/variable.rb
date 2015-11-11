@@ -10,7 +10,7 @@ module FactorGraphs
     end
 
     def reset_to_prior
-      value = prior
+      @value = @prior
     end
 
     def to_s
@@ -29,6 +29,7 @@ module FactorGraphs
     def initialize(key, prior, name = '')
       super(name)
       @key = key
+      @prior = prior
     end
   end
 end

@@ -17,11 +17,12 @@ module FactorGraphs
     end
 
     def update_message_at(message_index)
+      raise ArgumentError, "Illegal message message_index: #{message_index}" if message_index < 0 || message_index >= @messages.size
       update_message_with(@messages[message_index], @message_to_variable_binding[@messages[message_index]])
     end
 
     def update_message_with(message, variable)
-      raise "Virtual method FactorGraphs::Factor#update_message_with(message, variable) not implemented"
+      raise NotImplementedError, "Virtual method FactorGraphs::Factor#update_message_with(message, variable)"
     end
 
     def reset_marginals
@@ -35,7 +36,7 @@ module FactorGraphs
     end
 
     def send_message_with(message, variable)
-      raise "Abstract method FactorGraphs::Factor#send_message_with(message, variable)"
+      raise NotImplementedError, "Abstract method FactorGraphs::Factor#send_message_with(message, variable)"
     end
 
     def create_variable_to_message_binding(variable, message)

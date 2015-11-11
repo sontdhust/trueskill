@@ -1,6 +1,8 @@
 module Trueskill
   class TrueskillFactorGraph < FactorGraphs::FactorGraph
 
+    attr_reader :game_info
+
     def initialize(teams_ranks_hash, game_info = {})
       @teams = teams_ranks_hash.keys
       @ranks = teams_ranks_hash.values
@@ -12,6 +14,7 @@ module Trueskill
         :initial_mean => 25.0,                        # μ
         :initial_standard_deviation => 25.0 / 3.0     # σ
       }.merge(game_info)
+      @variable_factory = FactorGraphs::VariableFactory.new(-> { Numerics::GaussianDistribution.from_precision_mean })
 
       @prior_layer = Trueskill::Layers::PlayerPriorValuesToSkillsLayer.new(self, @teams)
       @layers = [

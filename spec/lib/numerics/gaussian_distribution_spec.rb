@@ -183,7 +183,7 @@ describe Numerics::GaussianDistribution, "#clone" do
   end
   
   it "should be equal to the cloned distribution" do
-    @dist1.clone(@dist2)
+    @dist1 = @dist2.clone
     expect(@dist1).to eq(@dist2)
   end
   
