@@ -13,9 +13,9 @@ module Numerics
     # precision_mean: τ (tau) = precision * mean = μ / (σ ** 2)
     attr_reader :mean, :standard_deviation, :variance, :precision, :precision_mean
 
-    def initialize(mean = 0.0, standard_deviation = 1.0)
+    def initialize(mean = 0.0, standard_deviation = 0.0)
       mean = 0.0 unless mean.to_f.finite?
-      standard_deviation = 1.0 unless standard_deviation.to_f.finite?
+      standard_deviation = 0.0 unless standard_deviation.to_f.finite?
       @mean = mean
       @standard_deviation = standard_deviation
       @variance = standard_deviation ** 2
@@ -82,6 +82,10 @@ module Numerics
         @@inv_sqrt_2pi * Math.exp(-0.5 * (x ** 2))
       end
       alias_method :pdf, :probability_density_function
+
+      def standard
+        @@standard ||= GaussianDistribution.new(0.0, 1.0)
+      end
     end
 
     def at(x)
@@ -105,7 +109,7 @@ module Numerics
     end
 
     def +(other)
-    
+
     end
 
     def ==(other)

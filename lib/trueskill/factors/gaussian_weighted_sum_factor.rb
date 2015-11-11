@@ -2,6 +2,9 @@ module Trueskill
   module Factors
     class GaussianWeightedSumFactor < GaussianFactorBase
 
+      # TODO: Remove this attribute readers (only for spec testing)
+      attr_reader :weights, :weights_squared, :variable_index_orders_for_weights
+
       def initialize(sum_variable, variables_to_sum, variable_weights)
         super()
         @weights = [variable_weights]

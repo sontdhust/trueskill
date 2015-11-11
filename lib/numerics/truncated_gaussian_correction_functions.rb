@@ -6,7 +6,7 @@ module Numerics
         denominator = GaussianDistribution.cdf(team_performance_difference - draw_margin)
         denominator < 2.222758749e-162 ?
           -team_performance_difference + draw_margin :
-          GaussianDistribution.new.at(team_performance_difference - draw_margin) / denominator
+          GaussianDistribution.standard.at(team_performance_difference - draw_margin) / denominator
       end
 
       def w_exceeds_margin(team_performance_difference, draw_margin)
@@ -30,8 +30,8 @@ module Numerics
             -team_performance_difference + draw_margin
         end
         numerator =
-          GaussianDistribution.new.at(-draw_margin - team_performance_difference_absolute_value) -
-          GaussianDistribution.new.at(draw_margin - team_performance_difference_absolute_value)
+          GaussianDistribution.standard.at(-draw_margin - team_performance_difference_absolute_value) -
+          GaussianDistribution.standard.at(draw_margin - team_performance_difference_absolute_value)
         team_performance_difference < 0 ? -numerator / denominator : numerator / denominator
       end
 
@@ -44,9 +44,9 @@ module Numerics
         vt = v_within_margin(team_performance_difference_absolute_value, draw_margin)
         return vt ** 2 + (
             (draw_margin - team_performance_difference_absolute_value) *
-            GaussianDistribution.new.at(draw_margin - team_performance_difference_absolute_value) -
+            GaussianDistribution.standard.at(draw_margin - team_performance_difference_absolute_value) -
             (-draw_margin - team_performance_difference_absolute_value) *
-            GaussianDistribution.new.at(-draw_margin - team_performance_difference_absolute_value)
+            GaussianDistribution.standard.at(-draw_margin - team_performance_difference_absolute_value)
           ) / denominator
       end
     end

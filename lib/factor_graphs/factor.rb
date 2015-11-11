@@ -5,7 +5,7 @@ module FactorGraphs
       @messages = []
       @message_to_variable_binding = {}
       @variables = []
-      @name = name.empty? nil : 'Factor(' + name + ')'
+      @name = name.empty? ? nil : 'Factor(' + name + ')'
     end
 
     def log_normalization

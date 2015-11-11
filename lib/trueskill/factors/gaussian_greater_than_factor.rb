@@ -18,7 +18,7 @@ module Trueskill
       end
 
       def update_message_with(message, variable)
-        message_from_variable = variable / message
+        message_from_variable = variable.value / message.value
         c = message_from_variable.precision
         d = message_from_variable.precision_mean
         sqrt_c = Math.sqrt(c)
@@ -30,8 +30,8 @@ module Trueskill
           (d + sqrt_c * Numerics::TruncatedGaussianCorrectionFunctions.v_exceeds_margin(d_on_sqrt_c, epsilon_times_sqrt_c)) /
           denominator
         new_marginal = Numerics::GaussianDistribution.from_precision_mean(new_precision_mean, new_precision)
-        new_message = message.value * new_marginal / variable
-        diff = new_marginal - variable
+        new_message = message.value * new_marginal / variable.value
+        diff = new_marginal - variable.value
         message.value = new_message.clone
         variable.value = new_marginal.clone
         return diff

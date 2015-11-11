@@ -5,7 +5,7 @@ module FactorGraphs
 
     def initialize(prior, name = '')
       @prior = prior
-      @name = name.empty? nil : 'Variable(' + name + ')'
+      @name = name.empty? ? nil : 'Variable(' + name + ')'
       reset_to_prior
     end
 
@@ -19,7 +19,7 @@ module FactorGraphs
   end
 
   class DefaultVariable < Variable
-    
+
   end
 
   class KeyedVariable < Variable

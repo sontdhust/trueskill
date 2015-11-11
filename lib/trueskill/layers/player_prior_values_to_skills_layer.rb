@@ -10,11 +10,11 @@ module Trueskill
       def build_layer
         @teams.each do |current_team|
           current_team_skills = []
-          current_team.each do |current_team_player|
-            player_skill = @parent_factor_graph.variable_factory.create_keyed_variable(current_team_player.key)
+          current_team.each do |current_player, current_rating|
+            player_skill = @parent_factor_graph.variable_factory.create_keyed_variable(current_player)
             @local_factors << Trueskill::Factors::GaussianPriorFactor.new(
-              current_team_player.value.mean,
-              current_team_player.value.standard_deviation ** 2 + @parent_factor_graph.game_info[:dynamics_factor],
+              current_rating.mean,
+              current_rating.standard_deviation ** 2 + @parent_factor_graph.game_info[:dynamics_factor],
               player_skill
             )
             current_team_skills << player_skill

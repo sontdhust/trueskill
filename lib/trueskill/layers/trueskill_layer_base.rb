@@ -5,5 +5,6 @@ module Trueskill
       def initialize(parent_factor_graph)
         super(parent_factor_graph)
       end
+    end
   end
 end

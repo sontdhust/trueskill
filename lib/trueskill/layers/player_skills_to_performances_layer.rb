@@ -18,11 +18,11 @@ module Trueskill
           @output_variables_groups << current_team_player_performances
         end
       end
-      
+
       def create_prior_schedule
         FactorGraphs::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::ScheduleStep.new(likelihood, 0) })
       end
-      
+
       def create_posterior_schedule
         FactorGraphs::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::ScheduleStep.new(likelihood, 1) })
       end

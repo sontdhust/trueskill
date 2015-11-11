@@ -22,7 +22,7 @@ module Trueskill
         FactorGraphs::ScheduleSequence.new(
           @local_factors.map { |weighted_sum_factor| FactorGraphs::ScheduleStep.new(weighted_sum_factor, 0) })
       end
-      
+
       def create_posterior_schedule
         schedules = []
         @local_factors.each do |current_factor|
@@ -30,7 +30,6 @@ module Trueskill
             each { |current_iteration| schedules << FactorGraphs::ScheduleStep.new(current_factor, current_iteration) }
         end
         FactorGraphs::ScheduleSequence.new(schedules)
-      end
       end
     end
   end

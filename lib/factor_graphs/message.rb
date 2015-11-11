@@ -5,7 +5,7 @@ module FactorGraphs
 
     def initialize(value, name = '')
       @value = value
-      @name = name.empty? nil : 'Message(' + name + ')'
+      @name = name.empty? ? nil : 'Message(' + name + ')'
     end
 
     def to_s
