@@ -61,7 +61,7 @@ module Trueskill
       private
 
       def update_helper(weights, weights_squared, messages, variables)
-        marginal0 = variables[0].value.clone
+        marginal0 = variables[0].value
         inverse_of_new_precision_sum, weighted_mean_sum = 0.0, 0.0
         weights_squared.each_index do |i|
           inverse_of_new_precision_sum += weights_squared[i] / (variables[i + 1].value.precision - messages[i + 1].value.precision)
@@ -75,10 +75,10 @@ module Trueskill
           1.0 / inverse_of_new_precision_sum * weighted_mean_sum,
           1.0 / inverse_of_new_precision_sum
         )
-        old_marginal_without_message = marginal0 / messages[0].value.clone
+        old_marginal_without_message = marginal0 / messages[0].value
         new_marginal = old_marginal_without_message * new_message
-        messages[0].value = new_message.clone
-        variables[0].value = new_marginal.clone
+        messages[0].value = new_message
+        variables[0].value = new_marginal
         return new_marginal - marginal0
       end
     end

@@ -9,7 +9,7 @@ describe Trueskill::Layers::PlayerPriorValuesToSkillsLayer do
     @layer = Trueskill::Layers::PlayerPriorValuesToSkillsLayer.new(@graph, @teams)
   end
 
-  describe "#build" do
+  describe "#build_layer" do
 
     it "should add 4 local_factors" do
       expect {

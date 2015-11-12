@@ -6,5 +6,10 @@ module Trueskill
       @mean = mean
       @standard_deviation = standard_deviation
     end
+
+    def replace(other)
+      @mean = other.mean
+      @standard_deviation = other.standard_deviation
+    end
   end
 end

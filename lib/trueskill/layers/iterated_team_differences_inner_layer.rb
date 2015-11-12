@@ -7,7 +7,6 @@ module Trueskill
         @team_performances_to_team_performance_differences_layer = team_performances_to_performance_differences
         @team_differences_comparison_layer = team_differences_comparison_layer
       end
-    end
 
       def build_layer
         @team_performances_to_team_performance_differences_layer.input_variables_groups = @input_variables_groups
@@ -18,9 +17,9 @@ module Trueskill
       end
 
       def create_prior_schedule
-        loop_schedule = if @input.size == 2
+        loop_schedule = if @input_variables_groups.size == 2
           create_two_team_inner_prior_loop_schedule
-        elsif @input.size > 2
+        elsif @input_variables_groups.size > 2
           create_multiple_team_inner_prior_loop_schedule
         else
           raise RuntimeError, 'Illegal input variables group'
@@ -32,6 +31,11 @@ module Trueskill
           FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.
             local_factors[total_team_differences - 1], 2)
         ])
+      end
+
+      def local_factors
+        @team_performances_to_team_performance_differences_layer.local_factors +
+          @team_differences_comparison_layer.local_factors
       end
 
       private
@@ -49,7 +53,7 @@ module Trueskill
           (0..(total_team_differences - 2)).map { |i|
             FactorGraphs::ScheduleSequence.new([
               FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 0),
-              FactorGraphs::ScheduleStep.new(@team_differences_comparison_layer.factors[i], 0),
+              FactorGraphs::ScheduleStep.new(@team_differences_comparison_layer.local_factors[i], 0),
               FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 2)
             ])
           }
@@ -68,5 +72,6 @@ module Trueskill
         )
         FactorGraphs::ScheduleLoop.new(FactorGraphs::ScheduleSequence.new([forward_schedule, backward_schedule]), 0.0001)
       end
+    end
   end
 end

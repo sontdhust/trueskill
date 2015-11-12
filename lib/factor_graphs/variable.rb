@@ -27,7 +27,7 @@ module FactorGraphs
     attr_reader :key
 
     def initialize(key, prior, name = '')
-      super(name)
+      super(prior, name)
       @key = key
       @prior = prior
     end

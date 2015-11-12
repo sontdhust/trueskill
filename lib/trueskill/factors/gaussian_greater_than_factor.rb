@@ -32,8 +32,8 @@ module Trueskill
         new_marginal = Numerics::GaussianDistribution.from_precision_mean(new_precision_mean, new_precision)
         new_message = message.value * new_marginal / variable.value
         diff = new_marginal - variable.value
-        message.value = new_message.clone
-        variable.value = new_marginal.clone
+        message.value = new_message
+        variable.value = new_marginal
         return diff
       end
     end

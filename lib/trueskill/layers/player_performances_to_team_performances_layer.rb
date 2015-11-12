@@ -8,13 +8,13 @@ module Trueskill
 
       def build_layer
         @input_variables_groups.each do |current_team|
-          team_performance = parent_factor_graph.variable_factory.create_basic_variable
+          team_performance = @parent_factor_graph.variable_factory.create_basic_variable
           @local_factors << Trueskill::Factors::GaussianWeightedSumFactor.new(
             team_performance,
             current_team,
             current_team.map { |variable| variable.key.partial_play_percentage }
           )
-          @output << [team_performance]
+          @output_variables_groups << [team_performance]
         end
       end
 

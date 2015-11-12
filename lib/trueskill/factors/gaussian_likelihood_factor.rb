@@ -32,8 +32,8 @@ module Trueskill
         )
         new_marginal = (variable1.value / message1.value) * new_message
         diff = new_marginal - variable1.value
-        message1.value = new_message.clone
-        variable1.value = new_marginal.clone
+        message1.value = new_message
+        variable1.value = new_marginal
         return diff
       end
     end

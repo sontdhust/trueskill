@@ -14,8 +14,8 @@ module Trueskill
           variable.value.precision + @new_message.precision - message.value.precision
         )
         diff = variable.value - new_marginal
-        variable.value = new_marginal.clone
-        message.value = @new_message.clone
+        variable.value = new_marginal
+        message.value = @new_message
         return diff
       end
     end

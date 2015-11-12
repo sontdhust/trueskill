@@ -14,7 +14,7 @@ module Trueskill
         :initial_mean => 25.0,                        # μ
         :initial_standard_deviation => 25.0 / 3.0     # σ
       }.merge(game_info)
-      @variable_factory = FactorGraphs::VariableFactory.new(-> { Numerics::GaussianDistribution.from_precision_mean })
+      @variable_factory = FactorGraphs::VariableFactory.new(-> { Numerics::GaussianDistribution.new })
 
       @prior_layer = Trueskill::Layers::PlayerPriorValuesToSkillsLayer.new(self, @teams)
       @layers = [
@@ -44,13 +44,29 @@ module Trueskill
     end
 
     def get_updated_ratings
-      result = {}
+      teams_result = []
       @prior_layer.output_variables_groups.each do |current_team|
+        team_result = {}
         current_team.each do |current_player|
-          result[current_layer.key] = Rating.new(current_player.value.mean, current_player.value.standard_deviation)
+          team_result[current_player.key] = Rating.new(current_player.value.mean, current_player.value.standard_deviation)
+        end
+        teams_result << team_result
+      end
+      teams_result
+    end
+
+    def update_skills
+      build_graph
+      run_schedule
+      # teams_result = get_updated_ratings
+      # TODO: Need improvement, other way to update team play ratings
+      @teams.each_with_index do |team, i|
+        j = 0
+        team.each do |player, rating|
+          rating.replace(@prior_layer.output_variables_groups[i][j].value)
+          j += 1
         end
       end
-      result
     end
   end
 end

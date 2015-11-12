@@ -25,7 +25,7 @@ module Numerics
 
     class << self
 
-      def from_precision_mean(precision_mean = 0.0, precision = 0.0)
+      def from_precision_mean(precision_mean, precision)
         GaussianDistribution.new(precision_mean / precision, Math.sqrt(1 / precision))
       end
 

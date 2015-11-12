@@ -54,6 +54,8 @@ end
   require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "trueskill", "#{name}.rb"))
 end
 
+require File.expand_path(File.join(File.dirname(__FILE__), "trueskill_matchers.rb"))
+
 def tolerance
   0.001
 end
