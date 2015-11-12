@@ -14,5 +14,4 @@ describe FactorGraphs::Schedule do
   it "should do something" do
     @step.visit
   end
-
 end

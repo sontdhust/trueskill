@@ -6,5 +6,15 @@ module Trueskill
       @name = name
       @partial_play_percentage = partial_play_percentage
     end
+
+    def ==(other)
+      @name == name
+    end
+
+    alias eql? ==
+
+    def hash
+      @name.hash
+    end
   end
 end

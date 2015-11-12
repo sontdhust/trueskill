@@ -4,20 +4,19 @@ describe Trueskill::TrueskillFactorGraph, "Unit Tests" do
 
   before :each do
     @teams = create_teams
-    @skill = @teams[0].values[0]
     @results = { @team1 => 1, @team2 => 2, @team3 => 3 }
     @graph = Trueskill::TrueskillFactorGraph.new(@results)
   end
 
-  describe "#update_skills" do
+  describe "#update" do
     it "should update the mean of the first player in team1 to 30.38345" do
-      @graph.update_skills
-      expect(@skill.mean).to be_within(tolerance).of(30.38345)
+      @graph.update
+      expect(@team1[@player1].mean).to be_within(tolerance).of(30.38345)
     end
 
     it "should update the standard_deviation of the first player in team1 to 3.46421" do
-      @graph.update_skills
-      expect(@skill.standard_deviation).to be_within(tolerance).of(3.46421)
+      @graph.update
+      expect(@team1[@player1].standard_deviation).to be_within(tolerance).of(3.46421)
     end
   end
 
@@ -30,12 +29,20 @@ end
 
 describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
   context "When there are two teams" do
+    let :player1 do
+      Trueskill::Player.new('1')
+    end
+
+    let :player2 do
+      Trueskill::Player.new('2')
+    end
+
     let :team1 do # Each team needs unique instances as we modify by side effect
-      { Trueskill::Player.new => Trueskill::Rating.new(25.0, 25.0/3.0) }
+      { player1 => Trueskill::Rating.new(25.0, 25.0/3.0) }
     end
 
     let :team2 do # Each team needs unique instances as we modify by side effect
-      { Trueskill::Player.new => Trueskill::Rating.new(25.0, 25.0/3.0) }
+      { player2 => Trueskill::Rating.new(25.0, 25.0/3.0) }
     end
 
     let :teams do
@@ -54,24 +61,23 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       describe 'team1 win with standard rating' do
 
         before :each do
-          Trueskill::TrueskillFactorGraph.new(results).update_skills
+          Trueskill::TrueskillFactorGraph.new(results).update
         end
 
         it "should change first players rating to [29.395832, 7.1714755]" do
-          expect(teams[0].values[0]).to TrueSkillMatchers::eql_rating(29.395832, 7.1714755)
+          expect(team1[player1]).to TrueSkillMatchers::eql_rating(29.395832, 7.1714755)
         end
 
         it "should change second players rating to [20.6041679, 7.1714755]" do
-          expect(teams[1].values[0]).to TrueSkillMatchers::eql_rating(20.6041679, 7.1714755)
+          expect(team2[player2]).to TrueSkillMatchers::eql_rating(20.6041679, 7.1714755)
         end
-
       end
     end
 
     describe 'draw with standard rating' do
 
       before :each do
-        Trueskill::TrueskillFactorGraph.new(draw_results).update_skills
+        Trueskill::TrueskillFactorGraph.new(draw_results).update
       end
 
       it "should change first players rating to [25.0, 6.4575196]" do
@@ -81,7 +87,6 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       it "should change second players rating to [25.0, 6.4575196]" do
         expect(teams[1].values[0]).to TrueSkillMatchers::eql_rating(25.0, 6.4575196)
       end
-
     end
 
     describe 'draw with different ratings' do
@@ -90,7 +95,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       end
 
       before :each do
-        Trueskill::TrueskillFactorGraph.new(draw_results).update_skills
+        Trueskill::TrueskillFactorGraph.new(draw_results).update
       end
 
       it "should change first players rating to [31.6623, 7.1374]" do
@@ -100,7 +105,6 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       it "should change second players mean to [35.0107, 7.9101]" do
         expect(teams[1].values[0]).to TrueSkillMatchers::eql_rating(35.010653, 7.910077)
       end
-
     end
 
     context "when it is a 1 vs 2" do
@@ -121,7 +125,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       #     it "should update the mean of the first player in team1 to 25.0 after draw" do
       #       @graph = Trueskill::TrueskillFactorGraph.new(draw_results, {:skills_additive => false})
 
-      #       @graph.update_skills
+      #       @graph.update
       #       expect(teams[0].values[0].mean).to be_within(tolerance).of(25.0)
       #     end
       #   end

@@ -22,7 +22,6 @@ describe Trueskill::Layers::PlayerPriorValuesToSkillsLayer do
         @layer.build_layer
       }.to change(@layer.output_variables_groups, :size).by(3)
     end
-
   end
 
   describe "#prior_schedule" do
@@ -34,6 +33,5 @@ describe Trueskill::Layers::PlayerPriorValuesToSkillsLayer do
     it "should return a sequence-schedule" do
       expect(@layer.create_prior_schedule).to be_kind_of(FactorGraphs::ScheduleSequence)
     end
-
   end
 end

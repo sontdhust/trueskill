@@ -61,8 +61,12 @@ def tolerance
 end
 
 def create_teams
-  @team1 = { Trueskill::Player.new => Trueskill::Rating.new(25, 4.1) }
-  @team2 = { Trueskill::Player.new => Trueskill::Rating.new(27, 3.1), Trueskill::Player.new => Trueskill::Rating.new(10, 1.0) }
-  @team3 = { Trueskill::Player.new => Trueskill::Rating.new(32, 0.2) }
+  @player1 = Trueskill::Player.new('1')
+  @team1 = { @player1 => Trueskill::Rating.new(25, 4.1) }
+  @team2 = {
+    Trueskill::Player.new('2a') => Trueskill::Rating.new(27, 3.1),
+    Trueskill::Player.new('2b') => Trueskill::Rating.new(10, 1.0)
+  }
+  @team3 = { Trueskill::Player.new('3') => Trueskill::Rating.new(32, 0.2) }
   [@team1, @team2, @team3]
 end
