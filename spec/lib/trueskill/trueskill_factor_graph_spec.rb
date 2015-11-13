@@ -4,18 +4,18 @@ describe Trueskill::TrueskillFactorGraph, "Unit Tests" do
 
   before :each do
     @teams = create_teams
-    @results = { @team1 => 1, @team2 => 2, @team3 => 3 }
-    @graph = Trueskill::TrueskillFactorGraph.new(@results)
+    @match = { @team1 => 1, @team2 => 2, @team3 => 3 }
+    @graph = Trueskill::TrueskillFactorGraph.new(@match)
   end
 
   describe "#update" do
     it "should update the mean of the first player in team1 to 30.38345" do
-      @graph.update
+      @graph.update!
       expect(@team1[@player1].mean).to be_within(tolerance).of(30.38345)
     end
 
     it "should update the standard_deviation of the first player in team1 to 3.46421" do
-      @graph.update
+      @graph.update!
       expect(@team1[@player1].standard_deviation).to be_within(tolerance).of(3.46421)
     end
   end
@@ -49,11 +49,11 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       [team1, team2]
     end
 
-    let :results do
+    let :match do
       { team1 => 1, team2 => 2 }
     end
 
-    let(:draw_results) do
+    let(:draw_match) do
       { team1 => 1, team2 => 1 }
     end
     context "and exactly two players" do
@@ -61,7 +61,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       describe 'team1 win with standard rating' do
 
         before :each do
-          Trueskill::TrueskillFactorGraph.new(results).update
+          Trueskill::TrueskillFactorGraph.new(match).update!
         end
 
         it "should change first players rating to [29.395832, 7.1714755]" do
@@ -77,7 +77,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
     describe 'draw with standard rating' do
 
       before :each do
-        Trueskill::TrueskillFactorGraph.new(draw_results).update
+        Trueskill::TrueskillFactorGraph.new(draw_match).update!
       end
 
       it "should change first players rating to [25.0, 6.4575196]" do
@@ -95,7 +95,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       end
 
       before :each do
-        Trueskill::TrueskillFactorGraph.new(draw_results).update
+        Trueskill::TrueskillFactorGraph.new(draw_match).update!
       end
 
       it "should change first players rating to [31.6623, 7.1374]" do
@@ -118,12 +118,12 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       # context "and the skills are additive" do
       #   describe "#@skill_update" do
       #     it "should have a Boolean @skills_additive = false" do
-      #       @graph = Trueskill::TrueskillFactorGraph.new(draw_results, {:skills_additive => false})
+      #       @graph = Trueskill::TrueskillFactorGraph.new(draw_match, {:skills_additive => false})
       #       expect(@graph.skills_additive).to be_false
       #     end
 
       #     it "should update the mean of the first player in team1 to 25.0 after draw" do
-      #       @graph = Trueskill::TrueskillFactorGraph.new(draw_results, {:skills_additive => false})
+      #       @graph = Trueskill::TrueskillFactorGraph.new(draw_match, {:skills_additive => false})
 
       #       @graph.update
       #       expect(teams[0].values[0].mean).to be_within(tolerance).of(25.0)

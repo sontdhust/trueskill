@@ -5,14 +5,14 @@ module TrueSkillMatchers
 
     def initialize(mean, standard_deviation, precision)
       @expected = Trueskill::Rating.new(mean, standard_deviation)
-      @precision = 10 ** precision
+      @precision = precision
     end
 
     def matches?(target)
       @target = target
       @mean_diff = @expected.mean - @target.mean
       @standard_deviation_diff = @expected.standard_deviation - @target.standard_deviation
-      (@mean_diff * @precision).to_i + (@standard_deviation_diff * @precision).to_i == 0
+      (@mean_diff / @precision).to_i + (@standard_deviation_diff / @precision).to_i == 0
     end
 
     def failure_message
@@ -31,7 +31,7 @@ module TrueSkillMatchers
     end
   end
 
-  def self.eql_rating(target_mean, target_standard_deviation, precision = 5)
+  def self.eql_rating(target_mean, target_standard_deviation, precision = 0.00001)
     EqualRating.new(target_mean, target_standard_deviation, precision)
   end
 end

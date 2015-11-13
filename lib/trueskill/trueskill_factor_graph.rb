@@ -4,8 +4,10 @@ module Trueskill
     attr_reader :game_info
 
     def initialize(teams_ranks_hash, game_info = {})
-      @teams = teams_ranks_hash.keys
-      @ranks = teams_ranks_hash.values
+      # Sort team ranks by ascending order
+      sorted_teams_ranks_hash = Hash[teams_ranks_hash.sort_by(&:last)]
+      @teams = sorted_teams_ranks_hash.keys
+      @ranks = sorted_teams_ranks_hash.values
 
       @game_info = {
         :initial_mean => 25.0,                        # μ
@@ -14,7 +16,7 @@ module Trueskill
         :dynamics_factor => 25.0 / 300.0,             # τ
         :draw_probability => 0.1
       }.merge(game_info)
-      @variable_factory = FactorGraphs::VariableFactory.new(-> { Numerics::GaussianDistribution.new })
+      @variable_factory = FactorGraphs::VariableFactory.new(-> { Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0) })
 
       @prior_layer = Trueskill::Layers::PlayerPriorValuesToSkillsLayer.new(self, @teams)
       @layers = [
@@ -29,11 +31,18 @@ module Trueskill
       ]
     end
 
+    def update!
+      build_graph
+      run_schedule
+      get_updated_ratings(true)
+      # get_probability_of_ranking
+    end
+
     def update
       build_graph
       run_schedule
       get_updated_ratings
-      get_probability_of_ranking
+      # get_probability_of_ranking
     end
 
     private
@@ -52,20 +61,20 @@ module Trueskill
       FactorGraphs::ScheduleSequence.new(schedules.compact).visit
     end
 
-    def get_updated_ratings
-      teams_result = []
+    def get_updated_ratings(forced_update = false)
+      new_ratings = {}
       @prior_layer.output_variables_groups.each do |current_team|
-        team_result = {}
         current_team.each do |current_player|
           new_rating = Rating.new(current_player.value.mean, current_player.value.standard_deviation)
-          team_result[current_player.key] = new_rating
-          @teams.each do |team|
-            team[current_player.key] = new_rating if team.key? current_player.key
+          new_ratings[current_player.key] = new_rating
+          if forced_update
+            @teams.each do |team|
+              team[current_player.key] = new_rating if team.key? current_player.key
+            end
           end
         end
-        teams_result << team_result
       end
-      teams_result
+      new_ratings
     end
 
     def get_probability_of_ranking

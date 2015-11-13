@@ -6,7 +6,7 @@ describe FactorGraphs::Schedule do
     @factor = Trueskill::Factors::GaussianPriorFactor.new(
       25.0,
       (25/3.0)**2,
-      FactorGraphs::Variable.new(Numerics::GaussianDistribution.new)
+      FactorGraphs::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
     )
     @step = FactorGraphs::ScheduleStep.new(@factor, 0)
   end

@@ -60,6 +60,10 @@ def tolerance
   0.001
 end
 
+def big_tolerance
+  0.085
+end
+
 def create_teams
   @player1 = Trueskill::Player.new('1')
   @team1 = { @player1 => Trueskill::Rating.new(25, 4.1) }

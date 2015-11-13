@@ -15,7 +15,7 @@ module Trueskill
       end
 
       def create_variable_to_message_binding(variable)
-        super(variable, FactorGraphs::Message.new(Numerics::GaussianDistribution.new))
+        super(variable, FactorGraphs::Message.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0)))
       end
     end
   end

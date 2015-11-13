@@ -4,7 +4,7 @@ describe Trueskill::Factors::GaussianLikelihoodFactor do
 
   before :each do
     @variable1 = FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(26, 1.1))
-    @variable2 = FactorGraphs::Variable.new(Numerics::GaussianDistribution.new)
+    @variable2 = FactorGraphs::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
     @factor = Trueskill::Factors::GaussianLikelihoodFactor.new(30, @variable1, @variable2)
   end
 
