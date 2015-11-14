@@ -15,9 +15,15 @@ end
   factor
   factor_graph
   layer
+  factor_graph_layer
   message
   schedule
+  schedule_loop
+  schedule_sequence
+  schedule_step
   variable
+  default_variable
+  keyed_variable
   variable_factory
 ).each do |name|
   require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "#{name}.rb"))

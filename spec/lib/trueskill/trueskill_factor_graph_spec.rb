@@ -4,8 +4,8 @@ describe Trueskill::TrueskillFactorGraph, "Unit Tests" do
 
   before :each do
     @teams = create_teams
-    @match = { @team1 => 1, @team2 => 2, @team3 => 3 }
-    @graph = Trueskill::TrueskillFactorGraph.new(@match)
+    @rank = { @team1 => 1, @team2 => 2, @team3 => 3 }
+    @graph = Trueskill::TrueskillFactorGraph.new(@rank)
   end
 
   describe "#update" do
@@ -49,7 +49,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       [team1, team2]
     end
 
-    let :match do
+    let :rank do
       { team1 => 1, team2 => 2 }
     end
 
@@ -61,7 +61,7 @@ describe Trueskill::TrueskillFactorGraph, "Integration Tests" do
       describe 'team1 win with standard rating' do
 
         before :each do
-          Trueskill::TrueskillFactorGraph.new(match).update!
+          Trueskill::TrueskillFactorGraph.new(rank).update!
         end
 
         it "should change first players rating to [29.395832, 7.1714755]" do

@@ -5,13 +5,26 @@
   <div class="wo"></div>
   <div class="wn"></div>
 </div>
-<header style="padding-left:10px;">
-  <%= image_tag "logo.png" %>
-</header>
+<div class="row" style="display: flex; align-items: center;">
+  <div class="col-md-4 col-sm-4 col-sx-4">
+    <header style="padding-left:10px;">
+      <%= image_tag "logo.png" %>
+    </header>
+  </div>
+  <div class="col-md-2 col-sm-2 col-sx-2">
+    <h4 id="current_season"></h4>
+  </div>
+  <div class="col-md-3 col-sm-3 col-sx-3">
+    <button id="load_data"></button>
+  </div>
+  <div class="col-md-1 col-sm-1 col-sx-1">
+    <button id="calculate-season">Calculate</button>
+  </div>
+</div>
 <div class="container-fluid wrap-window">
   <div class="row show-content">
     <div class="col-md-4 col-sm-4 col-sx-4 table-container">
-      <table class="table">
+      <table id="teams" class="table">
         <colgroup>
           <col/>
           <col/>
@@ -19,7 +32,7 @@
         </colgroup>
         <thead>
           <tr>
-            <th>Football Team</th>
+            <th>Team</th>
             <th>Current rating</th>
             <th>Old rating</th>
           </tr>
@@ -27,16 +40,16 @@
         <tbody>
           <% for team in @teams %>
             <tr>
-              <td><%= team.name %></td>
-              <td><%= team.mean.round(2).to_s + ' ±' + team.standard_deviation.round(2).to_s %></td>
-              <td></td>
+              <td class="team-name"><%= team.name %></td>
+              <td class="team-current-rating"><%= team.mean.round(2).to_s + ' ±' + team.standard_deviation.round(2).to_s %></td>
+              <td class="team-old-rating"></td>
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
     <div class="col-md-6 col-sm-6 col-sx-6 table-container">
-      <table class="table">
+      <table id="matches" class="table">
         <colgroup>
           <col/>
           <col/>
@@ -53,15 +66,6 @@
           </tr>
         </thead>
         <tbody>
-          <% for match in @matches %>
-            <tr>
-              <td><%= @teams.find(match.home_id).name %></td>
-              <td><%= @teams.find(match.away_id).name %></td>
-              <td>D</td>
-              <td><%= match.result %></td>
-              <td><%= match.date %></td>
-            </tr>
-          <% end %> 
         </tbody>
       </table>
     </div>
@@ -69,7 +73,7 @@
       <div class="row" style="margin: 0 auto;">
         <select class="text-center" style="width:100%">
           <% for team in @teams %>
-            <option value="<%=h team.id %>"><%=h team.name %></option>
+            <option value="<%= team.id %>"><%= team.name %></option>
           <% end %>
         </select>
       </div>
@@ -77,7 +81,7 @@
       <div class="row" style="margin: 0 auto;">
         <select class="text-center" style="width:100%">
           <% for team in @teams %>
-            <option value="<%=h team.id %>"><%=h team.name %></option>
+            <option value="<%= team.id %>"><%= team.name %></option>
           <% end %>
         </select>
       </div>
@@ -101,21 +105,67 @@
         </div>
       </div>
       <div class="submit-button text-center">
-        <button class="">Calculate</button>
+        <button id="calculate-match">Calculate</button>
       </div>
       <br />
-      <div>
-        <button class="">Load data for season 1993-1994</button>
+      <div class="submit-button text-center">
+        <button id="reset">Reset data</button>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
 $(function() {
-  $('table').tablesort();
-  $('thead th.date').data('sortBy', function(th, td, tablesort) {
+  $("table").tablesort();
+  $("thead th.date").data("sortBy", function(th, td, tablesort) {
     var date = td.text().split('/');
     return new Date(date[2], date[1], date[0]);
+  });
+
+  var current_year = 1993;
+  $("#load_data").text('Load data for season ' + current_year + '-' + (current_year + 1));
+  $("#load_data").click(function() {
+    var data = new FormData();
+    data.append('current_year', current_year + '-' + (current_year + 1));
+    $.ajax({
+      url: "<%= load_data_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+      data: data
+    }).success(function() {
+      $("#current_season").text('Season: ' + current_year + '-' + (current_year + 1));
+      if(current_year < 2015) current_year++;
+      $("#load_data").text('Load data for season ' + current_year + '-' + (current_year + 1));
+    });
+  });
+
+  $("#calculate-season").click(function() {
+    var data = new FormData();
+    data.append('current_year', (current_year - 1) + '-' + current_year);
+    $.ajax({
+      url: "<%= calculate_season_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+      data: data
+    });
+  });
+
+  $("#reset").click(function() {
+    $.ajax({
+      url: "<%= reset_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+    }).success(function() {
+      $("#current_season").text('');
+      current_year = 1993;
+      $("#load_data").text('Load data for season ' + current_year + '-' + (current_year + 1));
+    });
   });
 });
 </script>
