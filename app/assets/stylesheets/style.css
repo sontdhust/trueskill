@@ -56,7 +56,7 @@ table {
     height: 50px;
 }
 
-.result {
+.table-container {
     overflow: auto;
     background: transparent;
     min-height: 100%;

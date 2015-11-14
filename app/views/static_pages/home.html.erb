@@ -1,118 +1,121 @@
-
-    <div class="background">
-        <div class="wl"></div>
-        <div class="wq"></div>
-        <div class="wp"></div>
-        <div class="wo"></div>
-        <div class="wn"></div>
+<div class="background">
+  <div class="wl"></div>
+  <div class="wq"></div>
+  <div class="wp"></div>
+  <div class="wo"></div>
+  <div class="wn"></div>
+</div>
+<header style="padding-left:10px;">
+  <%= image_tag "logo.png" %>
+</header>
+<div class="container-fluid wrap-window">
+  <div class="row show-content">
+    <div class="col-md-4 col-sm-4 col-sx-4 table-container">
+      <table class="table">
+        <colgroup>
+          <col/>
+          <col/>
+          <col/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Football Team</th>
+            <th>Current rating</th>
+            <th>Old rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for team in @teams %>
+            <tr>
+              <td><%= team.name %></td>
+              <td><%= team.mean.round(2).to_s + ' ±' + team.standard_deviation.round(2).to_s %></td>
+              <td></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-    <header style="padding-left:10px;">
-        <%= image_tag "logo.png" %>
-    </header>
-    <!-- /header -->
-    <div class="container-fluid wrap-window">
-        <div class="row show-content">
-            <div class="col-md-5 col-sm-5 col-sx-5 result">
-                <table class="table">
-                    <colgroup>
-                        <col class="checkbox" />
-                        <col class="team-name" />
-                        <col class="mu" />
-                        <col class="sigma" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>VS</th>
-                            <th>Football Team Name</th>
-                            <th>MU</th>
-                            <th>Sigma</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for team in @teams %>
-                            <tr>
-                                <td>
-                                    <input type="checkbox">
-                                </td>
-                                <td><%=h team.name %></td>
-                                <td><%=h team.mean %></td>
-                                <td>+/- <%=h team.standard_deviation.round(3) %></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-5 col-sm-5 col-sx-5 result">
-                <table class="table">
-                    <colgroup>
-                        <col class="home-team" />
-                        <col class="away-team" />
-                        <col class="result" />
-                        <col class="date" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>Home Team</th>
-                            <th>Away Team</th>
-                            <th>Result</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for match in @matches %>
-                            <tr>
-                                <td><%=h @teams.find(match.home_id).name %></td>
-                                <td><%=h @teams.find(match.away_id).name %></td>
-                                <td><%=h match.result %></td>
-                                <td><%=h match.date %></td>
-                            </tr>
-                        <% end %>
-                        
-                       
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-2 col-sm-2 col-sx-2 left-menu">
-                <div class="row" style="margin: 0 auto;">
-                    <select class="text-center" style="width:100%">
-                        <% for team in @teams %>
-                            <option value="<%=h team.id %>"><%=h team.name %></option>
-                        <% end %>
-                    </select>
-                </div>
-                <h5 class="text-center">VS:</h5>
-                <div class="row" style="margin: 0 auto;">
-                    <select class="text-center" style="width:100%">
-                        <% for team in @teams %>
-                            <option value="<%=h team.id %>"><%=h team.name %></option>
-                        <% end %>
-                    </select>
-                </div>
-                <div class="user-choose text-center">
-                    <h5>User choose:</h5>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="optradio">A win</label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="optradio">B win</label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="optradio">Draw</label>
-                    </div>
-                </div>
-                <div class="submit-button text-center">
-                    <button class="">Execute</button>
-                </div>
-            </div>
+    <div class="col-md-6 col-sm-6 col-sx-6 table-container">
+      <table class="table">
+        <colgroup>
+          <col/>
+          <col/>
+          <col/>
+          <col/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Home Team</th>
+            <th>Away Team</th>
+            <th>Predict</th>
+            <th>Result</th>
+            <th class="date">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for match in @matches %>
+            <tr>
+              <td><%= @teams.find(match.home_id).name %></td>
+              <td><%= @teams.find(match.away_id).name %></td>
+              <td>D</td>
+              <td><%= match.result %></td>
+              <td><%= match.date %></td>
+            </tr>
+          <% end %> 
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-2 col-sm-2 col-sx-2 left-menu">
+      <div class="row" style="margin: 0 auto;">
+        <select class="text-center" style="width:100%">
+          <% for team in @teams %>
+            <option value="<%=h team.id %>"><%=h team.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <h5 class="text-center">VS:</h5>
+      <div class="row" style="margin: 0 auto;">
+        <select class="text-center" style="width:100%">
+          <% for team in @teams %>
+            <option value="<%=h team.id %>"><%=h team.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="user-choose">
+        <b>Predict: Draw</b>
+        <h5>Result:</h5>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optradio">A win
+          </label>
         </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optradio">B win
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optradio">Draw
+          </label>
+        </div>
+      </div>
+      <div class="submit-button text-center">
+        <button class="">Calculate</button>
+      </div>
+      <br />
+      <div>
+        <button class="">Load data for season 1993-1994</button>
+      </div>
     </div>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="jquery.tablesort.min.js"></script>
-    <script type="text/javascript">
-    $(function() {
-        $('table').tablesort().data('tablesort');
-    });
-    </script>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+  $('table').tablesort();
+  $('thead th.date').data('sortBy', function(th, td, tablesort) {
+    var date = td.text().split('/');
+    return new Date(date[2], date[1], date[0]);
+  });
+});
+</script>
