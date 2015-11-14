@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  home_id: 1
+  away_id: 1
+  result: MyString
+  date: MyString
+  year: MyString
+
+two:
+  home_id: 1
+  away_id: 1
+  result: MyString
+  date: MyString
+  year: MyString
