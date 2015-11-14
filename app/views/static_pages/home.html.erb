@@ -11,21 +11,6 @@
     </header>
     <!-- /header -->
     <div class="container-fluid wrap-window">
-        <div class="row tool">
-            <div class="col-md-2 ">
-                <h4>FOOTBALL PREDICTION</h4>
-            </div>
-            <div class="col-md-10">
-                <select style="width:80%;">
-                    <option value="">V-League</option>
-                    <option value="">Premier League</option>
-                    <option value="">FA Cup</option>
-                    <option value="">UEFA Champions League</option>
-                </select>
-                <button>Load Data</button>
-                <button>Save Data</button>
-            </div>
-        </div>
         <div class="row show-content">
             <div class="col-md-5 col-sm-5 col-sx-5 result">
                 <table class="table">
@@ -44,166 +29,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>24.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>21.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>254.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td>Manchester United</td>
-                            <td>25.0</td>
-                            <td>+/-8.0</td>
-                        </tr>
+                        <% for team in @teams %>
+                            <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td><%=h team.name %></td>
+                                <td><%=h team.mean %></td>
+                                <td>+/- <%=h team.standard_deviation.round(3) %></td>
+                            </tr>
+                        <% end %>
                     </tbody>
                 </table>
             </div>
@@ -213,137 +48,44 @@
                         <col class="home-team" />
                         <col class="away-team" />
                         <col class="result" />
+                        <col class="date" />
                     </colgroup>
                     <thead>
                         <tr>
                             <th>Home Team</th>
                             <th>Away Team</th>
                             <th>Result</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Manchester United</td>
-                            <td>Arsenal</td>
-                            <td>A</td>
-                        </tr>
+                        <% for match in @matches %>
+                            <tr>
+                                <td><%=h @teams.find(match.home_id).name %></td>
+                                <td><%=h @teams.find(match.away_id).name %></td>
+                                <td><%=h match.result %></td>
+                                <td><%=h match.date %></td>
+                            </tr>
+                        <% end %>
+                        
+                       
                     </tbody>
                 </table>
             </div>
             <div class="col-md-2 col-sm-2 col-sx-2 left-menu">
                 <div class="row" style="margin: 0 auto;">
                     <select class="text-center" style="width:100%">
-                        <option value="">Manchester United</option>
-                        <option value="">Real Madrid</option>
-                        <option value="">Chelsea</option>
+                        <% for team in @teams %>
+                            <option value="<%=h team.id %>"><%=h team.name %></option>
+                        <% end %>
                     </select>
                 </div>
                 <h5 class="text-center">VS:</h5>
                 <div class="row" style="margin: 0 auto;">
                     <select class="text-center" style="width:100%">
-                        <option value="">Manchester United</option>
-                        <option value="">Real Madrid</option>
-                        <option value="">Chelsea</option>
+                        <% for team in @teams %>
+                            <option value="<%=h team.id %>"><%=h team.name %></option>
+                        <% end %>
                     </select>
                 </div>
                 <div class="user-choose text-center">
