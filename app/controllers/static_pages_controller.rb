@@ -26,10 +26,16 @@ class StaticPagesController < ApplicationController
       home_player = Trueskill::Player.new(match.home.name)
       away_player = Trueskill::Player.new(match.away.name)
       home_team = {
-        home_player => Trueskill::Rating.new(match.home.mean, match.home.standard_deviation)
+        home_player => Trueskill::Rating.new(
+          @teams.find{ |t| t.id == match.home_id }.mean,
+          @teams.find{ |t| t.id == match.home_id }.standard_deviation
+        )
       }
       away_team = {
-        away_player => Trueskill::Rating.new(match.away.mean, match.away.standard_deviation)
+        away_player => Trueskill::Rating.new(
+          @teams.find{ |t| t.id == match.away_id }.mean,
+          @teams.find{ |t| t.id == match.away_id }.standard_deviation
+        )
       }
       case match.result
       when 'H'
@@ -41,6 +47,7 @@ class StaticPagesController < ApplicationController
       end
       graph = Trueskill::TrueskillFactorGraph.new(rank)
       result = graph.update
+
       @teams.find{ |t| t.id == match.home_id }.mean = result[home_player].mean
       @teams.find{ |t| t.id == match.home_id }.standard_deviation =
         result[home_player].standard_deviation
@@ -59,7 +66,11 @@ class StaticPagesController < ApplicationController
     session[:calculated] = true
     @teams = Team.all
     for team in @teams
-      team.update_attributes(mean: 25.0, standard_deviation: 25.0 / 3.0)
+      team.mean = 25.0
+      team.standard_deviation = 25.0 / 3.0
+    end
+    Team.transaction do
+      @teams.each(&:save!)
     end
   end
 
@@ -71,9 +82,10 @@ class StaticPagesController < ApplicationController
     for match in @matches
       win_probability = Trueskill::Rating.new(match.home.mean, match.home.standard_deviation).
         win_probability(Trueskill::Rating.new(match.away.mean, match.away.standard_deviation))
-      if win_probability < 1.0 / 3.0
+        # TODO: Choose relevant value
+      if win_probability > 3.0 / 5.0
         match.predict = 'H'
-      elsif win_probability > 2.0 / 3.0
+      elsif win_probability < 2.0 / 5.0
         match.predict = 'A'
       else
         match.predict = 'D'

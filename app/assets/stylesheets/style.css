@@ -101,3 +101,11 @@ button:disabled {
   color: white;
   border: none;
 }
+
+.bad-comparison {
+  color: red;
+}
+
+.good-comparison {
+  color: green;
+}
