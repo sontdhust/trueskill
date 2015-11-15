@@ -3,11 +3,11 @@ require File.expand_path('spec/spec_helper.rb')
 describe Trueskill::Factors::GaussianWeightedSumFactor do
 
   before :each do
-    @variable = FactorGraphs::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
+    @variable = FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
     @variables = [
-      FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(22, 1.6)),
-      FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(26, 2.5)),
-      FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(31, 3.6))
+      FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(22, 1.6)),
+      FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(26, 2.5)),
+      FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(31, 3.6))
     ]
     @factor = Trueskill::Factors::GaussianWeightedSumFactor.new(@variable, @variables, [0.5, 0.7, 0.8])
   end

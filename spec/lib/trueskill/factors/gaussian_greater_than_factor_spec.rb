@@ -3,7 +3,7 @@ require File.expand_path('spec/spec_helper.rb')
 describe Trueskill::Factors::GaussianGreaterThanFactor do
 
   before :each do
-    @variable = FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(0.1, 1.1))
+    @variable = FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(0.1, 1.1))
     @factor = Trueskill::Factors::GaussianGreaterThanFactor.new(0.1, @variable)
   end
 

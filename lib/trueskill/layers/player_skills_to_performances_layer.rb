@@ -20,11 +20,11 @@ module Trueskill
       end
 
       def create_prior_schedule
-        FactorGraphs::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::ScheduleStep.new(likelihood, 0) })
+        FactorGraphs::Schedules::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::Schedules::ScheduleStep.new(likelihood, 0) })
       end
 
       def create_posterior_schedule
-        FactorGraphs::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::ScheduleStep.new(likelihood, 1) })
+        FactorGraphs::Schedules::ScheduleSequence.new(@local_factors.map { |likelihood| FactorGraphs::Schedules::ScheduleStep.new(likelihood, 1) })
       end
     end
   end

@@ -19,17 +19,17 @@ module Trueskill
       end
 
       def create_prior_schedule
-        FactorGraphs::ScheduleSequence.new(
-          @local_factors.map { |weighted_sum_factor| FactorGraphs::ScheduleStep.new(weighted_sum_factor, 0) })
+        FactorGraphs::Schedules::ScheduleSequence.new(
+          @local_factors.map { |weighted_sum_factor| FactorGraphs::Schedules::ScheduleStep.new(weighted_sum_factor, 0) })
       end
 
       def create_posterior_schedule
         schedules = []
         @local_factors.each do |current_factor|
           (1..(current_factor.number_of_messages - 1)).
-            each { |current_iteration| schedules << FactorGraphs::ScheduleStep.new(current_factor, current_iteration) }
+            each { |current_iteration| schedules << FactorGraphs::Schedules::ScheduleStep.new(current_factor, current_iteration) }
         end
-        FactorGraphs::ScheduleSequence.new(schedules)
+        FactorGraphs::Schedules::ScheduleSequence.new(schedules)
       end
     end
   end

@@ -25,10 +25,10 @@ module Trueskill
           raise RuntimeError, 'Illegal input variables group'
         end
         total_team_differences = @team_performances_to_team_performance_differences_layer.local_factors.size;
-        FactorGraphs::ScheduleSequence.new([
+        FactorGraphs::Schedules::ScheduleSequence.new([
           loop_schedule, 
-          FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[0], 1),
-          FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.
+          FactorGraphs::Schedules::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[0], 1),
+          FactorGraphs::Schedules::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.
             local_factors[total_team_differences - 1], 2)
         ])
       end
@@ -41,36 +41,36 @@ module Trueskill
       private
 
       def create_two_team_inner_prior_loop_schedule
-        FactorGraphs::ScheduleSequence.new([
-          FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[0], 0), 
-          FactorGraphs::ScheduleStep.new(@team_differences_comparison_layer.local_factors[0], 0)
+        FactorGraphs::Schedules::ScheduleSequence.new([
+          FactorGraphs::Schedules::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[0], 0), 
+          FactorGraphs::Schedules::ScheduleStep.new(@team_differences_comparison_layer.local_factors[0], 0)
         ])
       end
 
       def create_multiple_team_inner_prior_loop_schedule
         total_team_differences = @team_performances_to_team_performance_differences_layer.local_factors.size
-        forward_schedule = FactorGraphs::ScheduleSequence.new(
+        forward_schedule = FactorGraphs::Schedules::ScheduleSequence.new(
           (0..(total_team_differences - 2)).map { |i|
-            FactorGraphs::ScheduleSequence.new([
-              FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 0),
-              FactorGraphs::ScheduleStep.new(@team_differences_comparison_layer.local_factors[i], 0),
-              FactorGraphs::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 2)
+            FactorGraphs::Schedules::ScheduleSequence.new([
+              FactorGraphs::Schedules::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 0),
+              FactorGraphs::Schedules::ScheduleStep.new(@team_differences_comparison_layer.local_factors[i], 0),
+              FactorGraphs::Schedules::ScheduleStep.new(@team_performances_to_team_performance_differences_layer.local_factors[i], 2)
             ])
           }
         )
-        backward_schedule = FactorGraphs::ScheduleSequence.new(
+        backward_schedule = FactorGraphs::Schedules::ScheduleSequence.new(
           (0..(total_team_differences - 2)).map { |i|
-            FactorGraphs::ScheduleSequence.new([
-              FactorGraphs::ScheduleStep.new(
+            FactorGraphs::Schedules::ScheduleSequence.new([
+              FactorGraphs::Schedules::ScheduleStep.new(
                 @team_performances_to_team_performance_differences_layer.local_factors[total_team_differences - 1 - i], 0),
-              FactorGraphs::ScheduleStep.new(
+              FactorGraphs::Schedules::ScheduleStep.new(
                 @team_differences_comparison_layer.local_factors[total_team_differences - 1 - i], 0),
-              FactorGraphs::ScheduleStep.new(
+              FactorGraphs::Schedules::ScheduleStep.new(
                 @team_performances_to_team_performance_differences_layer.local_factors[total_team_differences - 1 - i], 1)
             ])
           }
         )
-        FactorGraphs::ScheduleLoop.new(FactorGraphs::ScheduleSequence.new([forward_schedule, backward_schedule]), 0.0001)
+        FactorGraphs::Schedules::ScheduleLoop.new(FactorGraphs::Schedules::ScheduleSequence.new([forward_schedule, backward_schedule]), 0.0001)
       end
     end
   end

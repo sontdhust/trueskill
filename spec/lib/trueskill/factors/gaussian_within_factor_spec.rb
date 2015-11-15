@@ -3,7 +3,7 @@ require File.expand_path('spec/spec_helper.rb')
 describe Trueskill::Factors::GaussianWithinFactor do
 
   before :each do
-    @variable = FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(1.0, 1.1))
+    @variable = FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(1.0, 1.1))
     @factor = Trueskill::Factors::GaussianWithinFactor.new(0.01, @variable)
   end
 

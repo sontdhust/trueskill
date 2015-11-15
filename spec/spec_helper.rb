@@ -14,19 +14,34 @@ end
 %w(
   factor
   factor_graph
+  message
+  variable_factory
+).each do |name|
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "#{name}.rb"))
+end
+
+%w(
   layer
   factor_graph_layer
-  message
+).each do |name|
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "layers", "#{name}.rb"))
+end
+
+%w(
   schedule
   schedule_loop
   schedule_sequence
   schedule_step
+).each do |name|
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "schedules", "#{name}.rb"))
+end
+
+%w(
   variable
   default_variable
   keyed_variable
-  variable_factory
 ).each do |name|
-  require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "#{name}.rb"))
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "factor_graphs", "variables", "#{name}.rb"))
 end
 
 %w(

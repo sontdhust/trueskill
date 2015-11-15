@@ -3,8 +3,8 @@ require File.expand_path('spec/spec_helper.rb')
 describe Trueskill::Factors::GaussianLikelihoodFactor do
 
   before :each do
-    @variable1 = FactorGraphs::Variable.new(Numerics::GaussianDistribution.new(26, 1.1))
-    @variable2 = FactorGraphs::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
+    @variable1 = FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.new(26, 1.1))
+    @variable2 = FactorGraphs::Variables::Variable.new(Numerics::GaussianDistribution.from_precision_mean(0.0, 0.0))
     @factor = Trueskill::Factors::GaussianLikelihoodFactor.new(30, @variable1, @variable2)
   end
 

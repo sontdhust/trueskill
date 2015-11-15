@@ -83,9 +83,9 @@ class StaticPagesController < ApplicationController
       win_probability = Trueskill::Rating.new(match.home.mean, match.home.standard_deviation).
         win_probability(Trueskill::Rating.new(match.away.mean, match.away.standard_deviation))
         # TODO: Choose relevant value
-      if win_probability > 3.0 / 5.0
+      if win_probability > 17.0 / 40.0
         match.predict = 'H'
-      elsif win_probability < 2.0 / 5.0
+      elsif win_probability < 23.0 / 40.0
         match.predict = 'A'
       else
         match.predict = 'D'

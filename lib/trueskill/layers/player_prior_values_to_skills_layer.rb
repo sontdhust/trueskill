@@ -24,7 +24,7 @@ module Trueskill
       end
 
       def create_prior_schedule
-        FactorGraphs::ScheduleSequence.new(@local_factors.map { |prior| FactorGraphs::ScheduleStep.new(prior, 0) })
+        FactorGraphs::Schedules::ScheduleSequence.new(@local_factors.map { |prior| FactorGraphs::Schedules::ScheduleStep.new(prior, 0) })
       end
     end
   end

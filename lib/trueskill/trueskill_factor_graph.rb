@@ -58,7 +58,7 @@ module Trueskill
 
     def run_schedule
       schedules = @layers.map(&:create_prior_schedule) + @layers.reverse.map(&:create_posterior_schedule)
-      FactorGraphs::ScheduleSequence.new(schedules.compact).visit
+      FactorGraphs::Schedules::ScheduleSequence.new(schedules.compact).visit
     end
 
     def get_updated_ratings(forced_update = false)

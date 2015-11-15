@@ -1,6 +1,6 @@
 module Trueskill
   module Layers
-    class TrueskillLayerBase < FactorGraphs::FactorGraphLayer
+    class TrueskillLayerBase < FactorGraphs::Layers::FactorGraphLayer
 
       def initialize(parent_factor_graph)
         super(parent_factor_graph)

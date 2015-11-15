@@ -31,7 +31,7 @@ describe Trueskill::Layers::PlayerPriorValuesToSkillsLayer do
     end
 
     it "should return a sequence-schedule" do
-      expect(@layer.create_prior_schedule).to be_kind_of(FactorGraphs::ScheduleSequence)
+      expect(@layer.create_prior_schedule).to be_kind_of(FactorGraphs::Schedules::ScheduleSequence)
     end
   end
 end
