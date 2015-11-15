@@ -1,25 +1,22 @@
 class StaticPagesController < ApplicationController
   def home
     @teams = Team.all
+    session[:current_year] = 1992 unless session.key?(:current_year)
+    session[:calculated] = true unless session.key?(:calculated)
+    load
   end
 
   def load_data
-    @matches = Match.where(year: year_params)
-    for match in @matches
-      win_probability = Trueskill::Rating.new(match.home.mean, match.home.standard_deviation).
-        win_probability(Trueskill::Rating.new(match.away.mean, match.away.standard_deviation))
-      if win_probability < 1.0 / 3.0
-        match.predict = 'H'
-      elsif win_probability > 2.0 / 3.0
-        match.predict = 'A'
-      else
-        match.predict = 'D'
-      end
-    end
+    return if session[:current_year] == 2015
+    session[:current_year] += 1
+    session[:calculated] = false
+    load
   end
 
   def calculate_season
-    @matches = Match.where(year: year_params)
+    return if session[:current_year] > 2015
+    @matches = Match.where(
+      year: session[:current_year].to_s + '-' + (session[:current_year] + 1).to_s)
     @teams = Team.all
     for team in @teams
       team.old_mean = team.mean
@@ -54,16 +51,33 @@ class StaticPagesController < ApplicationController
     Team.transaction do
       @teams.each(&:save!)
     end
+    session[:calculated] = true
   end
 
   def reset
+    session[:current_year] = 1992
+    session[:calculated] = true
     @teams = Team.all
     for team in @teams
       team.update_attributes(mean: 25.0, standard_deviation: 25.0 / 3.0)
     end
   end
 
-  def year_params
-    params.require(:current_year)
+  private
+
+  def load
+    @matches = Match.where(
+      year: session[:current_year].to_s + '-' + (session[:current_year] + 1).to_s)
+    for match in @matches
+      win_probability = Trueskill::Rating.new(match.home.mean, match.home.standard_deviation).
+        win_probability(Trueskill::Rating.new(match.away.mean, match.away.standard_deviation))
+      if win_probability < 1.0 / 3.0
+        match.predict = 'H'
+      elsif win_probability > 2.0 / 3.0
+        match.predict = 'A'
+      else
+        match.predict = 'D'
+      end
+    end
   end
 end

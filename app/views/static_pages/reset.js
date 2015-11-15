@@ -7,3 +7,11 @@ $("#teams tbody").empty();
     .append($('<td>').attr('class', 'team-old-rating').text(""))
   );
 <% end %>
+<% if session[:current_year] >= 1993 %>
+  $("#current-season").text('Season: ' + "<%= session[:current_year] %>" + '-' + "<%= session[:current_year] + 1 %>");
+<% else %>
+  $("#current-season").text('');
+<% end %>
+$("#load-data").text('Load data for season ' + "<%= session[:current_year] + 1 %>" + '-' + "<%= session[:current_year] + 2 %>");
+$("#load-data").prop("disabled", "<%= session[:calculated] %>" == 'true' ? false : true);
+$("#calculate-season").prop("disabled", "<%= session[:calculated] %>" == 'true' ? true : false);
