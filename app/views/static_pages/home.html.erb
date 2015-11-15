@@ -74,36 +74,39 @@
     </div>
     <div class="col-md-2 col-sm-2 col-sx-2 left-menu">
       <div class="row" style="margin: 0 auto;">
-        <select class="text-center" style="width:100%">
+        <h5>Home team</h5>
+        <select id="home" class="text-center" style="width:100%">
+          <option value disabled selected>Select a team</option>
           <% for team in @teams %>
             <option value="<%= team.id %>"><%= team.name %></option>
           <% end %>
         </select>
       </div>
-      <h5 class="text-center">VS:</h5>
       <div class="row" style="margin: 0 auto;">
-        <select class="text-center" style="width:100%">
+        <h5>Away team</h5>
+        <select id="away" class="text-center" style="width:100%">
+          <option value disabled selected>Select a team</option>
           <% for team in @teams %>
             <option value="<%= team.id %>"><%= team.name %></option>
           <% end %>
         </select>
       </div>
       <div class="user-choose">
-        <b>Predict: Draw</b>
+        <b id="predict">Please select teams</b>
         <h5>Result:</h5>
         <div class="radio">
           <label>
-            <input type="radio" name="optradio">A win
+            <input type="radio" name="radio-result" value="H">Home team win
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="optradio">B win
+            <input type="radio" name="radio-result" value="A">Away team win
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="optradio">Draw
+            <input type="radio" name="radio-result" value="D">Draw
           </label>
         </div>
       </div>
@@ -131,10 +134,13 @@ $(function() {
     $("#current-season").text('');
   <% end %>
   $("#load-data").text('Load data for season ' + "<%= session[:current_year] + 1 %>" + '-' + "<%= session[:current_year] + 2 %>");
-  $("#load-data").prop("disabled", "<%= session[:calculated] %>" == 'true' ? false : true);
-  $("#calculate-season").prop("disabled", "<%= session[:calculated] %>" == 'true' ? true : false);
-  var cp = 0;
-  var mc = 0;
+  <% if session[:current_year] == 2015 %>
+    $("#load-data").prop("disabled", true);
+    $("#calculate-season").prop("disabled", true);
+  <% else %>
+    $("#load-data").prop("disabled", "<%= session[:calculated] %>" == 'true' ? false : true);
+    $("#calculate-season").prop("disabled", "<%= session[:calculated] %>" == 'true' ? true : false);
+  <% end %>
   <% for match in @matches %>
     $("#matches tbody").append($('<tr>').prop('class', "<%= match.predict == match.result ? 'good-comparison' : 'bad-comparison' %>")
       .append($('<td>').prop('class', 'match-home').text("<%== match.home.name %>"))
@@ -143,12 +149,8 @@ $(function() {
       .append($('<td>').prop('class', 'match-result').text("<%= match.result %>"))
       .append($('<td>').prop('class', 'match-date').text("<%= match.date %>"))
     );
-    <% if match.predict == match.result %>
-      cp++;
-    <% end %>
-    mc++;
   <% end %>
-  $("#correct-prediction").text('Correct prediction: ' + (cp / mc * 100).toFixed(2) + '%');
+  $("#correct-prediction").text("<%= @correct_prediction %>");
 
   $("#load-data").click(function() {
     $.ajax({
@@ -167,6 +169,49 @@ $(function() {
       processData: false,
       contentType: false,
       dataType : 'script',
+    });
+  });
+
+  $("#home").change(function() {
+    var data = new FormData();
+    data.append('home', $("#home").val());
+    data.append('away', $("#away").val());
+    $.ajax({
+      url: "<%= predict_match_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+      data: data
+    });
+  });
+
+  $("#away").change(function() {
+    var data = new FormData();
+    data.append('home', $("#home").val());
+    data.append('away', $("#away").val());
+    $.ajax({
+      url: "<%= predict_match_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+      data: data
+    });
+  });
+
+  $("#calculate-match").click(function() {
+    var data = new FormData();
+    data.append('home', $("#home").val());
+    data.append('away', $("#away").val());
+    data.append('result', $("input[name='radio-result']:checked").val());
+    $.ajax({
+      url: "<%= calculate_match_path %>",
+      type: "PUT",
+      processData: false,
+      contentType: false,
+      dataType : 'script',
+      data: data
     });
   });
 

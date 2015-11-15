@@ -1,6 +1,4 @@
 $("#matches tbody").empty();
-var cp = 0;
-var mc = 0;
 <% for match in @matches %>
   $("#matches tbody").append($('<tr>').prop('class', "<%= match.predict == match.result ? 'good-comparison' : 'bad-comparison' %>")
     .append($('<td>').prop('class', 'match-home').text("<%== match.home.name %>"))
@@ -9,12 +7,8 @@ var mc = 0;
     .append($('<td>').prop('class', 'match-result').text("<%= match.result %>"))
     .append($('<td>').prop('class', 'match-date').text("<%= match.date %>"))
   );
-  <% if match.predict == match.result %>
-    cp++;
-  <% end %>
-  mc++;
 <% end %>
 $("#current-season").text('Season: ' + "<%= session[:current_year] %>" + '-' + "<%= session[:current_year] + 1 %>");
 $("#load-data").prop("disabled", "<%= session[:calculated] %>" == 'true' ? false : true);
 $("#calculate-season").prop("disabled", "<%= session[:calculated] %>" == 'true' ? true : false);
-$("#correct-prediction").text('Correct prediction: ' + (cp / mc * 100).toFixed(2) + '%');
+$("#correct-prediction").text("<%= @correct_prediction %>");

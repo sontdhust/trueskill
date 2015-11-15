@@ -14,3 +14,14 @@ $("#load-data").text('Load data for season ' + "<%= session[:current_year] + 1 %
   $("#load-data").prop("disabled", "<%= session[:calculated] %>" == 'true' ? false : true);
   $("#calculate-season").prop("disabled", "<%= session[:calculated] %>" == 'true' ? true : false);
 <% end %>
+var data = new FormData();
+data.append('home', $("#home").val());
+data.append('away', $("#away").val());
+$.ajax({
+  url: "<%= predict_match_path %>",
+  type: "PUT",
+  processData: false,
+  contentType: false,
+  dataType : 'script',
+  data: data
+});
